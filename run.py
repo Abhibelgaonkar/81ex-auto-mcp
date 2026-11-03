@@ -14,7 +14,7 @@ with sync_playwright() as p:
         page.get_by_role("textbox", name="Please enter your email").fill(os.environ["EX_USER"])
         page.get_by_role("textbox", name="Please enter your password").click()
         page.get_by_role("textbox", name="Please enter your password").fill(os.environ["EX_PASS"])
-        page.get_by_role("img").filter(has_text=re.compile(r"^$")).click()
+        # page.get_by_role("img").filter(has_text=re.compile(r"^$")).click()
         page.get_by_role("textbox", name="Verification Code").click()
         page.get_by_role("textbox", name="Verification Code").fill("9348")
         page.get_by_role("button", name="Login").click()
