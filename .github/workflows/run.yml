@@ -1,26 +1,26 @@
-name: scheduled-run
+name: Run Cloud OCR Pipeline
+
 on:
-  schedule:
-    - cron: "30 3 * * *"   # 09:00 IST
-    - cron: "30 8 * * *"   # 14:00 IST
-    - cron: "30 14 * * *"  # 20:00 IST
-  workflow_dispatch:        # manual test button
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  run:
+  run-ocr:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-      - run: pip install -r requirements.txt && playwright install --with-deps chromium
-      - run: python run.py
-        env:
-          EX_USER: ${{ secrets.EX_USER }}
-          EX_PASS: ${{ secrets.EX_PASS }}
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: result
-          path: result.png
+          python-version: '3.11'
+
+      - name: Install Requests Library
+        run: pip install requests
+
+      # Executes your script from the subfolder
+      - name: Execute OCR Script
+        run: python ocr_api.py
